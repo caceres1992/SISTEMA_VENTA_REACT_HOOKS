@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const axiosConfigLocal = axios.create({
-    baseURL: process.env.REACT_APP_API_URL, // api url
+    baseURL:'https://api-sistema-venta.herokuapp.com/api' // api url
 });
 
