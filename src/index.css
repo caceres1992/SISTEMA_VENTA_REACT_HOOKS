@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.selectCustom{
+    @apply bg-gray-50 border uppercase border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-400 focus:border-blue-400 block w-full p-2.5 dark:bg-gray-100 dark:border-gray-100 dark:placeholder-gray-600 dark:text-gray-500 dark:focus:ring-blue-400 dark:focus:border-blue-400
+}
+.btnDetails{
+    @apply p-2 px-3 transition-colors duration-700 transform bg-blue-500 hover:bg-blue-400 text-gray-100 text-xs rounded-lg focus:border-4 border-indigo-300
+}
+
+.error{
+    @apply text-red-500 text-sm
+}
