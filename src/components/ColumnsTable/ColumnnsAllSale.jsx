@@ -40,7 +40,7 @@ export const columnsAllSale = (deleteVenta)=>[
         dataIndex: 'Acciones',
         fixed: 'right',
         key: 'Acciones',
-        render: (text, record) =>   record.status &&  <Popconfirm key={record?.idVenta} title="Si se anula no podra ser restaurando" okButtonProps={
+        render: (text, record) =>   record.status &&  <Popconfirm key={record?.idVenta} title="Si se anula, No podra ser restaurando" okButtonProps={
             {color:'cyan',className:'text-xs bg-blue-500 text-white py-0 px-2 h-6'}
         } cancelButtonProps={{ className:'text-xs py-0 px-3  h-6'} } onConfirm={()=>deleteVenta(record.idVenta)}> <button type={"submit"}  className="btnDelete" ><IoBagRemoveOutline size={20}/></button> </Popconfirm>
     },
