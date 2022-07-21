@@ -28,15 +28,15 @@ const Cliente = () => {
     },
     {
       title: "Nombre completo",
-      dataIndex: "nombre",
-      key: "nombre",
-      render: (_, record) => <span className='uppercase'>{record.nombre +" "+ record.apellidoPaterno +" "+ record.apellidoMaterno}</span>
+      dataIndex: "name",
+      key: "name",
+      render: (_, record) => <span className='uppercase'>{record.lastName +", "+ record.name}</span>
     },
     {
       title: "Direccion",
-      dataIndex: "direccion",
-      key: "direccion",
-      render: (_,value) => <span className='uppercase'>{value.direccion == null?"No registrado ":value.direccion}</span>
+      dataIndex: "address",
+      key: "address",
+      render: (_,value) => <span className='uppercase'>{value.address == null?"No registrado ":value.address}</span>
 
     },
     {

@@ -5,31 +5,57 @@ import {
   Card,
   Button,
   Table,
+  message,
 } from "antd";
 import DrawerVenta from "../components/Drawer/DrawerVenta";
 import { useEffect, useState } from "react";
 import { getAllProductos } from "../services/productoService";
 import { getAllSales } from "../services/SaleService";
 import { columnsAllSale } from "../components/ColumnsTable/ColumnnsAllSale";
+import { deleteProductoVenta } from "../services/ProductVentaService";
 
 const  Venta=()=> {
 
 
 const [visible, setVisible] = useState(false);
-
+const [refreshApi, setRefreshApi] = useState(false);
 const [dataProducts, setDataProducts] = useState([]);
 
+
+const deleteVenta = (idVenta) => {
+  console.log(idVenta);
+  deleteProductoVenta(idVenta).then(res => {
+      setRefreshApi(true)
+      message.success("Venta anulada correctamente");
+  }).catch(err => {
+    console.log(err)
+    message.error("Error al eliminar venta")
+   })
+}
+
+const getAllSalesByApi = () => {
+  getAllSales().then(res => {
+      setDataProducts(res.data);
+  }).catch(err => { console.log(err) })
+}
+
 useEffect(() => {
-  const getAllSalesByApi = () => {
-      getAllSales().then(res => {
-          setDataProducts(res.data);
-      }).catch(err => { console.log(err) })
-  }
+
 
   if (!visible) {
     getAllSalesByApi();
   }
 }, [visible]);
+
+useEffect(() => {
+  if(refreshApi){
+    getAllSalesByApi();
+    setRefreshApi(false);
+  }
+}, [refreshApi]);
+
+
+
 
   return (
     <>
@@ -48,7 +74,7 @@ useEffect(() => {
             >
               <div className="table-responsive">
                
-                <Table className="ant-border-space" dataSource={dataProducts} columns={columnsAllSale}
+                <Table className="ant-border-space" dataSource={dataProducts} columns={columnsAllSale(deleteVenta)}
                 />
               </div>
            <DrawerVenta visible={visible} setVisible={setVisible}/>

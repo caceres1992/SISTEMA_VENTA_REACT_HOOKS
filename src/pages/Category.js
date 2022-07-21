@@ -37,7 +37,7 @@ const Category = () => {
         <Card
         bordered={false}
         className="criclebox tablespace mb-24"
-        title="Tabla de Productos"
+        title="Tabla de Categorias"
         extra={
           
                <Button onClick={()=> setVisible(true)}>Agregar Producto</Button>

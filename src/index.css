@@ -13,3 +13,6 @@
 .error{
     @apply text-red-500 text-sm
 }
+.btnDelete{
+    @apply text-red-500
+}

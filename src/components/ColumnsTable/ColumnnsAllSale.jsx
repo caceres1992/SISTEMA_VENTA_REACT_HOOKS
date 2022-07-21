@@ -1,7 +1,7 @@
-import { Tag } from "antd"
-import { AiOutlineEdit } from "react-icons/ai"
+import { Popconfirm, Tag } from "antd"
+import { IoBagRemoveOutline } from "react-icons/io5"
 
-export const columnsAllSale = [
+export const columnsAllSale = (deleteVenta)=>[
     {
         title: 'Cliente',
         dataIndex: 'fullNameClient',
@@ -40,10 +40,9 @@ export const columnsAllSale = [
         dataIndex: 'Acciones',
         fixed: 'right',
         key: 'Acciones',
-        render: (text, record) =>( <div key={record?.idVenta}>
-                     <button type={"submit"}  className="btnDetails" onClick={() => {alert("editando")}}><AiOutlineEdit size={20}/></button>
-
-        </div>)
+        render: (text, record) =>   record.status &&  <Popconfirm key={record?.idVenta} title="Si se anula no podra ser restaurando" okButtonProps={
+            {color:'cyan',className:'text-xs bg-blue-500 text-white py-0 px-2 h-6'}
+        } cancelButtonProps={{ className:'text-xs py-0 px-3  h-6'} } onConfirm={()=>deleteVenta(record.idVenta)}> <button type={"submit"}  className="btnDelete" ><IoBagRemoveOutline size={20}/></button> </Popconfirm>
     },
 
     

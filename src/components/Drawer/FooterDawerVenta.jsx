@@ -15,7 +15,7 @@ const FooterDawerVenta = ({ selectedProducts, clientSelected, setVisible }) => {
     const IGV = parseFloat((total * 0.18).toFixed(2))
 
     const generarVenta = () => {
-        const productos = selectedProducts.map(product => ({ id: product.idProducto, stock: product.quantity, price: product.price }))
+        const productos = selectedProducts.map(product => ({ idProduct: product.idProducto, stock: product.quantity, price: product.price }))
         const ventaDetalle = {
             idCliente: clientSelected?.id,
             idVendedor: 1,

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { v4 } from 'uuid';
 import { getAllClientes,getClienteByDniByApi } from '../../services/clienteService';
 import { getAllProductos, getProductoById } from '../../services/productoService';
+import { deleteProductoVenta } from '../../services/ProductVentaService';
 import TableVenta from '../Table/TableVenta'
 import FooterDawerVenta from './FooterDawerVenta';
 const DrawerVenta = ({ visible, setVisible }) => {
@@ -96,6 +97,8 @@ const DrawerVenta = ({ visible, setVisible }) => {
         setSelectedProducts(newArrayProdcuctos)
     }
 
+  
+
     useEffect(() => {
 
         const getDataByApa = async () => {
@@ -136,8 +139,8 @@ const DrawerVenta = ({ visible, setVisible }) => {
                         <Col >
                             <Row gutter={12}>
                                 <Col md={12}>
-                                    <Form.Item label="DNI">
-                                        <Select placeholder="BUSCAR CLIENTE POR DNI" showSearch  onChange={(value)=>getClienteByDni(value)}>
+                                    <Form.Item label="DNI del cliente" >
+                                        <Select size='large' placeholder="BUSCAR CLIENTE POR DNI" showSearch  onChange={(value)=>getClienteByDni(value)}>
                                             {clientData?.map((client) => {
                                                 return (
                                                     <Select.Option key={client.id} value={client.dni}>{client.dni}</Select.Option>
@@ -147,26 +150,22 @@ const DrawerVenta = ({ visible, setVisible }) => {
                                     </Form.Item>
                                 </Col>
                                 <Col md={12}>
-                                    <Form.Item label="Nombre">
+                                    {/* <Form.Item label="Nombre">
                                         <Button block type='primary'>Buscar online</Button>
-                                    </Form.Item>
+                                    </Form.Item> */}
                                 </Col>
                             </Row>
 
                             <Row gutter={6}>
-                                <Col md={12}>
-                                    <Form.Item label="Nombres">
-                                        <Input placeholder="Jhon " value={clientSelected?.nombre} />
-                                    </Form.Item>
-                                </Col>
-                                <Col md={12}>
+                             
+                                <Col span={24}>
                                     <Form.Item label="Apellidos">
-                                        <Input placeholder='Doe' value={clientSelected?.apellidoPaterno+ clientSelected?.apellidoMaterno} />
+                                        <Input className='uppercase' placeholder='Doe' value={clientSelected?.lastName +", "+clientSelected?.name} />
                                     </Form.Item>
                                 </Col>
                             </Row>
                             <Form.Item label="Direccion">
-                                <Input placeholder='av la paz 123' value={clientSelected?.direccion !=null  ? clientSelected.direccion:"NO TIENE"} />
+                                <Input className='uppercase' placeholder='av la paz 123' value={clientSelected?.address !=null  ? clientSelected.address:"NO TIENE"} />
                             </Form.Item>
                         </Col>
                     </Form>
@@ -188,7 +187,7 @@ const DrawerVenta = ({ visible, setVisible }) => {
                         </Form.Item>
 
                         <Form.Item label="Precio">
-                            <Input onChange={onchangeHandle} name="price" size='large' type={"number"} value={price} placeholder="Producto" />
+                            <Input onChange={onchangeHandle} name="price" size='large' type={"number"}  value={price} placeholder="Producto" />
 
 
                         </Form.Item>
