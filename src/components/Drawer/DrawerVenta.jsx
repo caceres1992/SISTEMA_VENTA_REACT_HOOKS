@@ -1,7 +1,7 @@
-import { Button, Col, Drawer, Form, Input, Row, Select, Space } from 'antd'
+import { Button, Col, Drawer, Form, Input, message, Row, Select, Space } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { v4 } from 'uuid';
-import { getAllClientes,getClienteByDniByApi } from '../../services/clienteService';
+import { getAllClientes, getClienteByDniByApi } from '../../services/clienteService';
 import { getAllProductos, getProductoById } from '../../services/productoService';
 import { deleteProductoVenta } from '../../services/ProductVentaService';
 import TableVenta from '../Table/TableVenta'
@@ -21,13 +21,13 @@ const DrawerVenta = ({ visible, setVisible }) => {
     });
 
     const [clientData, setClientData] = useState([]);
-    
-    const [clientSelected, setClientSelected] = useState({});
+
+    const [clientSelected, setClientSelected] = useState(null);
     const [generateDetalleVenta, setGenerateDetalleVenta] = useState({
     });
 
     const { quantity, price, idProducto } = selectedProduct;
-   
+
 
 
 
@@ -44,13 +44,17 @@ const DrawerVenta = ({ visible, setVisible }) => {
 
     const addProductVenta = (e) => {
         e.preventDefault();
-        const price = parseInt(selectedProduct.price)
-        const quantity = parseInt(selectedProduct.quantity)
-        const total = price * quantity
-        const idVentaProducto = v4();
-        setSelectedProducts([...selectedProducts, {
-            ...selectedProduct, price, quantity, idVentaProducto: idVentaProducto, total: total
-        }]);
+        if (selectedProduct.idProducto) {
+            const price = parseInt(selectedProduct.price)
+            const quantity = parseInt(selectedProduct.quantity)
+            const total = price * quantity
+            const idVentaProducto = v4();
+            setSelectedProducts([...selectedProducts, {
+                ...selectedProduct, price, quantity, idVentaProducto: idVentaProducto, total: total
+            }]);
+        } else {
+            message.info("seleccione un producto para agregar")
+        }
     }
 
     const onchangeHandle = (e) => {
@@ -88,7 +92,7 @@ const DrawerVenta = ({ visible, setVisible }) => {
     }
     const getClienteByDni = (clientDni) => {
         getClienteByDniByApi(clientDni).then(res => {
-           setClientSelected(res);
+            setClientSelected(res);
         }).catch(err => { console.log(err) })
     }
 
@@ -97,7 +101,7 @@ const DrawerVenta = ({ visible, setVisible }) => {
         setSelectedProducts(newArrayProdcuctos)
     }
 
-  
+
 
     useEffect(() => {
 
@@ -134,13 +138,15 @@ const DrawerVenta = ({ visible, setVisible }) => {
 
                 <Col span={15}>
 
-                    <Form layout='vertical'>
-
+                    <Form layout='vertical'
+                
+                    >
+                    
                         <Col >
                             <Row gutter={12}>
                                 <Col md={12}>
                                     <Form.Item label="DNI del cliente" >
-                                        <Select size='large' placeholder="BUSCAR CLIENTE POR DNI" showSearch  onChange={(value)=>getClienteByDni(value)}>
+                                        <Select size='large' placeholder="BUSCAR CLIENTE POR DNI" showSearch onChange={(value) => getClienteByDni(value)}>
                                             {clientData?.map((client) => {
                                                 return (
                                                     <Select.Option key={client.id} value={client.dni}>{client.dni}</Select.Option>
@@ -149,31 +155,30 @@ const DrawerVenta = ({ visible, setVisible }) => {
                                         </Select>
                                     </Form.Item>
                                 </Col>
-                                <Col md={12}>
-                                    {/* <Form.Item label="Nombre">
-                                        <Button block type='primary'>Buscar online</Button>
-                                    </Form.Item> */}
-                                </Col>
+
                             </Row>
 
-                            <Row gutter={6}>
-                             
-                                <Col span={24}>
-                                    <Form.Item label="Apellidos">
-                                        <Input className='uppercase' placeholder='Doe' value={clientSelected?.lastName +", "+clientSelected?.name} />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                            <Form.Item label="Direccion">
-                                <Input className='uppercase' placeholder='av la paz 123' value={clientSelected?.address !=null  ? clientSelected.address:"NO TIENE"} />
-                            </Form.Item>
+
+                            {clientSelected && (<>
+                                <Form.Item label="Apellidos">
+                                    <Input className='uppercase' disabled placeholder='Doe' value={clientSelected?.lastName + ", " + clientSelected?.name} />
+                                </Form.Item>
+
+
+                                <Form.Item label="Direccion">
+                                    <Input className='uppercase' disabled placeholder='av la paz 123' value={clientSelected?.address != null ? clientSelected.address : "NO TIENE"} />
+                                </Form.Item>
+                            </>
+                            )}
+
+
                         </Col>
                     </Form>
                 </Col>
                 <Col span={9}>
                     <Form layout='vertical' onSubmitCapture={addProductVenta}>
                         <Form.Item label="Producto">
-                            <Select onChange={addSelectedProduct}  size='large' showSearch placeholder="Producto">
+                            <Select onChange={addSelectedProduct} size='large' showSearch placeholder="Producto">
                                 {productsData?.map((product) =>
                                     <Select.Option className='text-sm' key={product.id} value={product.id}>{product.modelName + ""}
                                         <Row className='items-center'> talla <span className='text-cyan-700 mx-3 '>{product.size.toUpperCase()}</span>   </Row>
@@ -183,13 +188,11 @@ const DrawerVenta = ({ visible, setVisible }) => {
                         </Form.Item>
 
                         <Form.Item label="cantdiad">
-                            <Input onChange={onchangeHandle} name="quantity" size='large' min={0} max={100} type={"number"}  placeholder="cantidad" />
+                            <Input onChange={onchangeHandle} name="quantity" size='large' min={1} value={quantity} max={100} type={"number"} placeholder="cantidad" />
                         </Form.Item>
 
                         <Form.Item label="Precio">
-                            <Input onChange={onchangeHandle} name="price" size='large' type={"number"}  value={price} placeholder="Producto" />
-
-
+                            <Input formNoValidate onChange={onchangeHandle} step="0.01" name="price" size='large' type={"number"} min={0} value={price} placeholder="Producto" />
                         </Form.Item>
                         <Button className='text-blue-400' type='primary' htmlType='submit' block>Agregar producto</Button>
                     </Form>

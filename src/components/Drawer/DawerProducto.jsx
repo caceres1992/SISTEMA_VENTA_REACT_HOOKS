@@ -159,9 +159,13 @@ useEffect(() => {
 
                 </Form.Item>
                 <Form.Item label="Seleccionar Color">
+                    <div>
                     <Space>
                     <RadioControler control={control} options={ProductColors} name="color"  />
                     </Space>
+                    </div>
+
+                    {errors?.color && <span className='text-red-400 font-semibold text-xs'>{errors.color?.message}</span>}
                 </Form.Item>
 
                 <Form.Item label="Seleccionar Talla">

@@ -1,4 +1,4 @@
-import { Button, Col, Divider, Drawer, Form, Input, Row, Select, Space } from 'antd'
+import { Button, Col, Divider, Drawer, Form, Input, message, Row, Select, Space } from 'antd'
 import React from 'react'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -20,10 +20,16 @@ const DawerCliente = ({ visible, setVisible }) => {
     const onSubmitCliente = (data) => {
      
         addClient(data).then(res => {
-            console.log(res)
+            
             setVisible(false)
-        }).catch(err => { console.log(err) })
-        console.log(data)
+        }).catch(err => {  
+            if(err.response.status === 422){
+                message.warning("Porfavor El DNI ya existe, intente con otro DNI")
+            }else{
+                message.error("Error al agregar el cliente")
+            }
+           })
+       
     }
     return (
         <Drawer
