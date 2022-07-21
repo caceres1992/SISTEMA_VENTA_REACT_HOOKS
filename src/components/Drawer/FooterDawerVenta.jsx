@@ -1,7 +1,8 @@
-import { Button, Col, Input, Row, Space } from 'antd'
+import { Button, Col, Input, message, Row, Space } from 'antd'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import Logo from '../../assets/images/fashoown.png'
+import { saleRegistered } from '../../services/ProductVentaService'
 
 const FooterDawerVenta = ({ selectedProducts, clientSelected, setVisible }) => {
     const [paywith, setPaywith] = useState(0)
@@ -30,16 +31,16 @@ const FooterDawerVenta = ({ selectedProducts, clientSelected, setVisible }) => {
     const agregarVenta = (ventaDetalle) => {
 
         if (ventaDetalle.requestProducto.length > 0) {
-            axios.post('http://localhost:8080/api/productoventas', ventaDetalle)
+            saleRegistered(ventaDetalle)
                 .then(res => {
-                    console.log(res)
+                    message.success("Venta registrada exitosamente")
                     setVisible(false)
 
                 }).catch(err => {
                     console.log(err)
                 })
         } else {
-            alert('No hay productos para vender')
+            message.warning("No hay productos registrados para realizar una venta")
         }
 
     }
